@@ -133,12 +133,31 @@ function rollDice() {
         const dice = createDice();
         area.appendChild(dice);
 
-        const x = 360 * (Math.floor(Math.random() * 4) + 1);
-        const y = 360 * (Math.floor(Math.random() * 4) + 1);
-        const z = 360 * (Math.floor(Math.random() * 4) + 1);
+        // Pick a random result 1–6
+        const result = Math.floor(Math.random() * 6) + 1;
+
+        // Predefined rotations for each face
+        const rotations = {
+            1: { x: 0,   y: 0   },
+            2: { x: -90, y: 0   },
+            3: { x: 0,   y: 90  },
+            4: { x: 0,   y: -90 },
+            5: { x: 90,  y: 0   },
+            6: { x: 180, y: 0   }
+        };
+
+        // Add extra full spins for realism
+        const extraX = 360 * (Math.floor(Math.random() * 4) + 1);
+        const extraY = 360 * (Math.floor(Math.random() * 4) + 1);
+        const extraZ = 360 * (Math.floor(Math.random() * 4) + 1);
+
+        const finalX = rotations[result].x + extraX;
+        const finalY = rotations[result].y + extraY;
+        const finalZ = extraZ;
 
         setTimeout(() => {
-            dice.style.transform = `rotateX(${x}deg) rotateY(${y}deg) rotateZ(${z}deg)`;
+            dice.style.transform =
+                `rotateX(${finalX}deg) rotateY(${finalY}deg) rotateZ(${finalZ}deg)`;
         }, 50);
     }
 }
