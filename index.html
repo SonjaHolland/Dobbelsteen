@@ -61,17 +61,38 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 40px;
-        font-weight: bold;
     }
 
+    .pips {
+        position: relative;
+        width: 70px;
+        height: 70px;
+    }
+
+    .pip {
+        width: 12px;
+        height: 12px;
+        background: black;
+        border-radius: 50%;
+        position: absolute;
+    }
+
+    /* pip positions */
+    .tl { top: 10%; left: 10%; }
+    .tr { top: 10%; right: 10%; }
+    .bl { bottom: 10%; left: 10%; }
+    .br { bottom: 10%; right: 10%; }
+    .c  { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .ml { top: 50%; left: 10%; transform: translateY(-50%); }
+    .mr { top: 50%; right: 10%; transform: translateY(-50%); }
+
     /* 3D positions */
-    .front  { transform: rotateY(0deg) translateZ(50px); }
-    .back   { transform: rotateY(180deg) translateZ(50px); }
-    .right  { transform: rotateY(90deg) translateZ(50px); }
-    .left   { transform: rotateY(-90deg) translateZ(50px); }
-    .top    { transform: rotateX(90deg) translateZ(50px); }
-    .bottom { transform: rotateX(-90deg) translateZ(50px); }
+    .front  { transform: rotateY(0deg) translateZ(50px); }   /* 1 */
+    .back   { transform: rotateY(180deg) translateZ(50px); } /* 6 */
+    .right  { transform: rotateY(90deg) translateZ(50px); }  /* 3 */
+    .left   { transform: rotateY(-90deg) translateZ(50px); } /* 4 */
+    .top    { transform: rotateX(90deg) translateZ(50px); }  /* 5 */
+    .bottom { transform: rotateX(-90deg) translateZ(50px); } /* 2 */
 </style>
 </head>
 
@@ -91,24 +112,39 @@
 <div id="diceArea" class="dice-area"></div>
 
 <script>
+function createFace(pipPattern, extraClass) {
+    const face = document.createElement("div");
+    face.className = "face " + extraClass;
+
+    const pipsContainer = document.createElement("div");
+    pipsContainer.className = "pips";
+
+    pipPattern.forEach(cls => {
+        const pip = document.createElement("div");
+        pip.className = "pip " + cls;
+        pipsContainer.appendChild(pip);
+    });
+
+    face.appendChild(pipsContainer);
+    return face;
+}
+
 function createDice() {
     const dice = document.createElement("div");
     dice.className = "dice";
 
+    // Pip patterns for each value
     const faces = [
-        { class: "front",  value: 1 },
-        { class: "back",   value: 6 },
-        { class: "right",  value: 3 },
-        { class: "left",   value: 4 },
-        { class: "top",    value: 5 },
-        { class: "bottom", value: 2 }
+        { class: "front",  pips: ["c"] },                                      // 1
+        { class: "back",   pips: ["tl","tr","ml","mr","bl","br"] },            // 6
+        { class: "right",  pips: ["tl","c","br"] },                            // 3
+        { class: "left",   pips: ["tl","tr","bl","br"] },                      // 4
+        { class: "top",    pips: ["tl","tr","c","bl","br"] },                  // 5
+        { class: "bottom", pips: ["tl","br"] }                                 // 2
     ];
 
     faces.forEach(f => {
-        const face = document.createElement("div");
-        face.className = "face " + f.class;
-        face.textContent = f.value;
-        dice.appendChild(face);
+        dice.appendChild(createFace(f.pips, f.class));
     });
 
     return dice;
@@ -123,7 +159,6 @@ function rollDice() {
         const dice = createDice();
         area.appendChild(dice);
 
-        // Random rotation for realistic roll
         const x = 360 * (Math.floor(Math.random() * 4) + 1);
         const y = 360 * (Math.floor(Math.random() * 4) + 1);
         const z = 360 * (Math.floor(Math.random() * 4) + 1);
@@ -137,4 +172,5 @@ function rollDice() {
 
 </body>
 </html>
+
 
