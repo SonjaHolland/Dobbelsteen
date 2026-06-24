@@ -18,7 +18,7 @@
         justify-content: center;
         gap: 40px;
         margin-top: 30px;
-        perspective: 800px;
+        perspective: 900px;
     }
 
     .dice {
@@ -26,7 +26,7 @@
         height: 100px;
         position: relative;
         transform-style: preserve-3d;
-        transition: transform 1s cubic-bezier(.25,1.5,.5,1);
+        transition: transform 1.2s ease-out;
     }
 
     .face {
@@ -38,7 +38,6 @@
         border-radius: 10px;
     }
 
-    /* PIP STYLE */
     .pip {
         width: 18px;
         height: 18px;
@@ -47,7 +46,6 @@
         position: absolute;
     }
 
-    /* PIP POSITIONS */
     .tl { top: 15px; left: 15px; }
     .tr { top: 15px; right: 15px; }
     .bl { bottom: 15px; left: 15px; }
@@ -56,7 +54,6 @@
     .ml { top: 50%; left: 15px; transform: translateY(-50%); }
     .mr { top: 50%; right: 15px; transform: translateY(-50%); }
 
-    /* 3D POSITIONS */
     .front  { transform: rotateY(0deg) translateZ(50px); }
     .back   { transform: rotateY(180deg) translateZ(50px); }
     .right  { transform: rotateY(90deg) translateZ(50px); }
@@ -93,13 +90,13 @@
 <div id="diceArea" class="dice-area"></div>
 
 <script>
-function createFace(pipClasses, faceClass) {
+function createFace(pips, cls) {
     const face = document.createElement("div");
-    face.className = "face " + faceClass;
+    face.className = "face " + cls;
 
-    pipClasses.forEach(cls => {
+    pips.forEach(p => {
         const pip = document.createElement("div");
-        pip.className = "pip " + cls;
+        pip.className = "pip " + p;
         face.appendChild(pip);
     });
 
@@ -111,15 +108,15 @@ function createDice() {
     dice.className = "dice";
 
     const faces = [
-        { class: "front",  pips: ["c"] },                                      // 1
-        { class: "back",   pips: ["tl","tr","ml","mr","bl","br"] },            // 6
-        { class: "right",  pips: ["tl","c","br"] },                            // 3
-        { class: "left",   pips: ["tl","tr","bl","br"] },                      // 4
-        { class: "top",    pips: ["tl","tr","c","bl","br"] },                  // 5
-        { class: "bottom", pips: ["tl","br"] }                                 // 2
+        { cls: "front",  p: ["c"] },                                      // 1
+        { cls: "back",   p: ["tl","tr","ml","mr","bl","br"] },            // 6
+        { cls: "right",  p: ["tl","c","br"] },                            // 3
+        { cls: "left",   p: ["tl","tr","bl","br"] },                      // 4
+        { cls: "top",    p: ["tl","tr","c","bl","br"] },                  // 5
+        { cls: "bottom", p: ["tl","br"] }                                 // 2
     ];
 
-    faces.forEach(f => dice.appendChild(createFace(f.pips, f.class)));
+    faces.forEach(f => dice.appendChild(createFace(f.p, f.cls)));
 
     return dice;
 }
@@ -133,26 +130,23 @@ function rollDice() {
         const dice = createDice();
         area.appendChild(dice);
 
-        // Pick a random result 1–6
         const result = Math.floor(Math.random() * 6) + 1;
 
-        // Predefined rotations for each face
-        const rotations = {
-            1: { x: 0,   y: 0   },
-            2: { x: -90, y: 0   },
-            3: { x: 0,   y: 90  },
-            4: { x: 0,   y: -90 },
-            5: { x: 90,  y: 0   },
-            6: { x: 180, y: 0   }
+        const base = {
+            1: {x: 0,   y: 0},
+            2: {x: -90, y: 0},
+            3: {x: 0,   y: 90},
+            4: {x: 0,   y: -90},
+            5: {x: 90,  y: 0},
+            6: {x: 180, y: 0}
         };
 
-        // Add extra full spins for realism
         const extraX = 360 * (Math.floor(Math.random() * 4) + 1);
         const extraY = 360 * (Math.floor(Math.random() * 4) + 1);
         const extraZ = 360 * (Math.floor(Math.random() * 4) + 1);
 
-        const finalX = rotations[result].x + extraX;
-        const finalY = rotations[result].y + extraY;
+        const finalX = base[result].x + extraX;
+        const finalY = base[result].y + extraY;
         const finalZ = extraZ;
 
         setTimeout(() => {
@@ -165,6 +159,7 @@ function rollDice() {
 
 </body>
 </html>
+
 
 
 
