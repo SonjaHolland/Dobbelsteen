@@ -13,28 +13,6 @@
         color: white;
     }
 
-    h1 {
-        margin-bottom: 10px;
-    }
-
-    .controls {
-        margin-bottom: 20px;
-    }
-
-    select, button {
-        padding: 10px 18px;
-        font-size: 18px;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-    }
-
-    button {
-        background: gold;
-        color: black;
-        font-weight: bold;
-    }
-
     .dice-area {
         display: flex;
         justify-content: center;
@@ -58,41 +36,47 @@
         background: white;
         border: 3px solid #222;
         border-radius: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
     }
 
-    .pips {
-        position: relative;
-        width: 70px;
-        height: 70px;
-    }
-
+    /* PIP STYLE */
     .pip {
-        width: 12px;
-        height: 12px;
+        width: 18px;
+        height: 18px;
         background: black;
         border-radius: 50%;
         position: absolute;
     }
 
-    /* pip positions */
-    .tl { top: 10%; left: 10%; }
-    .tr { top: 10%; right: 10%; }
-    .bl { bottom: 10%; left: 10%; }
-    .br { bottom: 10%; right: 10%; }
+    /* PIP POSITIONS */
+    .tl { top: 15px; left: 15px; }
+    .tr { top: 15px; right: 15px; }
+    .bl { bottom: 15px; left: 15px; }
+    .br { bottom: 15px; right: 15px; }
     .c  { top: 50%; left: 50%; transform: translate(-50%, -50%); }
-    .ml { top: 50%; left: 10%; transform: translateY(-50%); }
-    .mr { top: 50%; right: 10%; transform: translateY(-50%); }
+    .ml { top: 50%; left: 15px; transform: translateY(-50%); }
+    .mr { top: 50%; right: 15px; transform: translateY(-50%); }
 
-    /* 3D positions */
-    .front  { transform: rotateY(0deg) translateZ(50px); }   /* 1 */
-    .back   { transform: rotateY(180deg) translateZ(50px); } /* 6 */
-    .right  { transform: rotateY(90deg) translateZ(50px); }  /* 3 */
-    .left   { transform: rotateY(-90deg) translateZ(50px); } /* 4 */
-    .top    { transform: rotateX(90deg) translateZ(50px); }  /* 5 */
-    .bottom { transform: rotateX(-90deg) translateZ(50px); } /* 2 */
+    /* 3D POSITIONS */
+    .front  { transform: rotateY(0deg) translateZ(50px); }
+    .back   { transform: rotateY(180deg) translateZ(50px); }
+    .right  { transform: rotateY(90deg) translateZ(50px); }
+    .left   { transform: rotateY(-90deg) translateZ(50px); }
+    .top    { transform: rotateX(90deg) translateZ(50px); }
+    .bottom { transform: rotateX(-90deg) translateZ(50px); }
+
+    button, select {
+        padding: 10px 18px;
+        font-size: 18px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+    }
+
+    button {
+        background: gold;
+        color: black;
+        font-weight: bold;
+    }
 </style>
 </head>
 
@@ -100,32 +84,25 @@
 
 <h1>3D Dice Roller</h1>
 
-<div class="controls">
-    <label style="font-size:18px;">Number of dice:</label>
-    <select id="diceCount">
-        <option value="1">1 die</option>
-        <option value="2">2 dice</option>
-    </select>
-    <button onclick="rollDice()">Roll Dice</button>
-</div>
+<select id="diceCount">
+    <option value="1">1 die</option>
+    <option value="2">2 dice</option>
+</select>
+<button onclick="rollDice()">Roll Dice</button>
 
 <div id="diceArea" class="dice-area"></div>
 
 <script>
-function createFace(pipPattern, extraClass) {
+function createFace(pipClasses, faceClass) {
     const face = document.createElement("div");
-    face.className = "face " + extraClass;
+    face.className = "face " + faceClass;
 
-    const pipsContainer = document.createElement("div");
-    pipsContainer.className = "pips";
-
-    pipPattern.forEach(cls => {
+    pipClasses.forEach(cls => {
         const pip = document.createElement("div");
         pip.className = "pip " + cls;
-        pipsContainer.appendChild(pip);
+        face.appendChild(pip);
     });
 
-    face.appendChild(pipsContainer);
     return face;
 }
 
@@ -133,7 +110,6 @@ function createDice() {
     const dice = document.createElement("div");
     dice.className = "dice";
 
-    // Pip patterns for each value
     const faces = [
         { class: "front",  pips: ["c"] },                                      // 1
         { class: "back",   pips: ["tl","tr","ml","mr","bl","br"] },            // 6
@@ -143,9 +119,7 @@ function createDice() {
         { class: "bottom", pips: ["tl","br"] }                                 // 2
     ];
 
-    faces.forEach(f => {
-        dice.appendChild(createFace(f.pips, f.class));
-    });
+    faces.forEach(f => dice.appendChild(createFace(f.pips, f.class)));
 
     return dice;
 }
@@ -172,5 +146,6 @@ function rollDice() {
 
 </body>
 </html>
+
 
 
