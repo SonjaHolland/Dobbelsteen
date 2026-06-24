@@ -6,29 +6,24 @@
 
 <style>
     body {
-        margin: 0;
-        width: 1024px;
-        height: 768px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: url('https://i.imgur.com/8pQeQ0R.jpeg'); /* Wooden table */
-        background-size: cover;
-        background-position: center;
-        overflow: hidden;
+        background: #0b6623;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding-top: 40px;
+        color: white;
     }
 
     .dice-area {
         display: flex;
         justify-content: center;
-        align-items: center;
-        gap: 60px;
-        perspective: 1200px;
+        gap: 40px;
+        margin-top: 30px;
+        perspective: 900px;
     }
 
     .dice {
-        width: 260px;
-        height: 260px;
+        width: 100px;
+        height: 100px;
         position: relative;
         transform-style: preserve-3d;
         transition: transform 1.2s ease-out;
@@ -36,70 +31,61 @@
 
     .face {
         position: absolute;
-        width: 260px;
-        height: 260px;
+        width: 100px;
+        height: 100px;
         background: white;
-        border: 6px solid #222;
-        border-radius: 20px;
+        border: 3px solid #222;
+        border-radius: 10px;
     }
 
     .pip {
-        width: 40px;
-        height: 40px;
+        width: 18px;
+        height: 18px;
         background: black;
         border-radius: 50%;
         position: absolute;
     }
 
-    .tl { top: 25px; left: 25px; }
-    .tr { top: 25px; right: 25px; }
-    .bl { bottom: 25px; left: 25px; }
-    .br { bottom: 25px; right: 25px; }
+    .tl { top: 15px; left: 15px; }
+    .tr { top: 15px; right: 15px; }
+    .bl { bottom: 15px; left: 15px; }
+    .br { bottom: 15px; right: 15px; }
     .c  { top: 50%; left: 50%; transform: translate(-50%, -50%); }
-    .ml { top: 50%; left: 25px; transform: translateY(-50%); }
-    .mr { top: 50%; right: 25px; transform: translateY(-50%); }
+    .ml { top: 50%; left: 15px; transform: translateY(-50%); }
+    .mr { top: 50%; right: 15px; transform: translateY(-50%); }
 
-    .front  { transform: rotateY(0deg) translateZ(130px); }
-    .back   { transform: rotateY(180deg) translateZ(130px); }
-    .right  { transform: rotateY(90deg) translateZ(130px); }
-    .left   { transform: rotateY(-90deg) translateZ(130px); }
-    .top    { transform: rotateX(90deg) translateZ(130px); }
-    .bottom { transform: rotateX(-90deg) translateZ(130px); }
+    .front  { transform: rotateY(0deg) translateZ(50px); }
+    .back   { transform: rotateY(180deg) translateZ(50px); }
+    .right  { transform: rotateY(90deg) translateZ(50px); }
+    .left   { transform: rotateY(-90deg) translateZ(50px); }
+    .top    { transform: rotateX(90deg) translateZ(50px); }
+    .bottom { transform: rotateX(-90deg) translateZ(50px); }
 
-    .controls {
-        position: absolute;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 20px;
-    }
-
-    select, button {
-        padding: 12px 20px;
-        font-size: 20px;
-        border-radius: 10px;
+    button, select {
+        padding: 10px 18px;
+        font-size: 18px;
+        border-radius: 8px;
         border: none;
         cursor: pointer;
-        font-weight: bold;
     }
 
     button {
         background: gold;
         color: black;
+        font-weight: bold;
     }
 </style>
 </head>
 
 <body>
 
-<div class="controls">
-    <select id="diceCount">
-        <option value="1">1 die</option>
-        <option value="2">2 dice</option>
-    </select>
-    <button onclick="rollDice()">Roll Dice</button>
-</div>
+<h1>3D Dice Roller</h1>
+
+<select id="diceCount">
+    <option value="1">1 die</option>
+    <option value="2">2 dice</option>
+</select>
+<button onclick="rollDice()">Roll Dice</button>
 
 <div id="diceArea" class="dice-area"></div>
 
