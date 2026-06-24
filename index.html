@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Dobbelstenen</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #f0f0f0;
+        padding-top: 40px;
+    }
+
+    .dice-container {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 20px;
+    }
+
+    .dice {
+        width: 100px;
+        height: 100px;
+        background: white;
+        border-radius: 12px;
+        border: 3px solid #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 48px;
+        font-weight: bold;
+        transition: transform 0.3s ease;
+    }
+
+    .rolling {
+        transform: rotate(360deg);
+    }
+
+    button {
+        padding: 12px 20px;
+        font-size: 18px;
+        margin: 10px;
+        cursor: pointer;
+        border-radius: 8px;
+        border: none;
+        background: #333;
+        color: white;
+    }
+
+    select {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 6px;
+    }
+</style>
+</head>
+<body>
+
+<h1>🎲 Dobbelstenen</h1>
+
+<label>Hoeveel dobbelstenen?</label>
+<select id="aantal">
+    <option value="1">1 dobbelsteen</option>
+    <option value="2">2 dobbelstenen</option>
+</select>
+
+<br><br>
+<button onclick="rollDice()">Gooi!</button>
+
+<div id="diceArea" class="dice-container"></div>
+
+<script>
+function rollDice() {
+    const aantal = document.getElementById("aantal").value;
+    const diceArea = document.getElementById("diceArea");
+
+    diceArea.innerHTML = "";
+
+    for (let i = 0; i < aantal; i++) {
+        const d = document.createElement("div");
+        d.className = "dice rolling";
+        d.textContent = "-";
+        diceArea.appendChild(d);
+
+        setTimeout(() => {
+            d.classList.remove("rolling");
+            d.textContent = Math.floor(Math.random() * 6) + 1;
+        }, 300);
+    }
+}
+</script>
+
+</body>
+</html>
